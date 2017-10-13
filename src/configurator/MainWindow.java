@@ -55,6 +55,289 @@ public class MainWindow extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
     }
 
+    public void checkSelectedOptions() {
+        cayman.getOptionNames().setLength(0);
+        cayman.getOptionPrices().setLength(0);
+        if(mainSeatHeatCheckBox.isSelected()) {
+            cayman.addOption("Seat Heating", 530);
+        } if(mainPASMCheckBox.isSelected()) {
+            cayman.addOption("Porsche Active Stability Management (PASM)", 1790);
+        } if(mainBoseCheckBox.isSelected()) {
+            cayman.addOption("BOSE® Surround Sound System", 990);
+        } if(mainNavCheckBox.isSelected()) {
+            cayman.addOption("Navigation Module", 1780);
+        }
+    }
+    
+    public int getEquipPrice() {
+        int price = 0;
+        if(mainSeatHeatCheckBox.isSelected()) {
+            price += 530;
+        } if(mainPASMCheckBox.isSelected()) {
+            price += 1790;
+        } if(mainBoseCheckBox.isSelected()) {
+            price += 990;
+        } if(mainNavCheckBox.isSelected()) {
+            price += 1780;
+        }
+        return price;
+    }
+    
+    //Change all components' background color to white in a given container
+    @SuppressWarnings("empty-statement")
+    private void getComponents(Container container) {
+
+    Component[] components = container.getComponents();
+        for (Component component : components) {
+            if ("javax.swing.JPanel".equals(component.getClass().getName())) {
+                component.setBackground(Color.WHITE);
+            } if (container.getClass().isInstance(component)) {
+                ;
+            }
+            getComponents((Container) component);
+        }
+    }
+    
+    public void setPriceFields() {
+        int basePrice = 67700;
+        int equipPrice = getEquipPrice();
+        equipPrice += cayman.getExtColorPrice()
+                    + cayman.getWheelStylePrice()
+                    + cayman.getIntColorPrice()
+                    + cayman.getTransPrice();
+        int deliverPrice = 1050;
+        int totalPrice = basePrice + equipPrice + deliverPrice;
+        mainEquipPriceDollarLabel.setText(DF.format(equipPrice));
+        mainTotalPriceDollarLabel.setText(DF.format(totalPrice));
+        overviewEquipPriceDollarLabel.setText(DF.format(equipPrice));
+        overviewTotalPriceDollarLabel.setText(DF.format(totalPrice));
+    }
+    
+    //Determines current specification, builds path to corresponding model-image
+    //directory, loads proper images to GUI model display
+    public void setImagePath(String displayName) {
+        StringBuilder path = new StringBuilder(50);
+        
+        String extColorPath = cayman.getExtColorPath();
+        String wheelStylePath = cayman.getWheelStylePath();
+        String intColorPath = cayman.getIntColorPath();
+        String transPath = cayman.getTransPath();
+        String extension = "";
+        if(displayName.equalsIgnoreCase("main window")) {
+            if(mainImageSelect1Radio.isSelected()) {
+                extension = "ext-1.jpg";
+            } else if(mainImageSelect2Radio.isSelected()) {
+                extension = "ext-2.jpg";
+            } else if(mainImageSelect3Radio.isSelected()) {
+                extension = "ext-3.jpg";
+            } else if(mainImageSelect4Radio.isSelected()) {
+                extension = "ext-4.jpg";
+            } else if(mainImageSelect5Radio.isSelected()) {
+                extension = "int-1.jpg";
+            } else if(mainImageSelect6Radio.isSelected()) {
+                extension = "int-2.jpg";
+            }
+        } else if(displayName.equalsIgnoreCase("overview window")) {
+            if(overviewImageSelect1Radio.isSelected()) {
+                extension = "ext-1.jpg";
+            } else if(overviewImageSelect2Radio.isSelected()) {
+                extension = "ext-2.jpg";
+            } else if(overviewImageSelect3Radio.isSelected()) {
+                extension = "ext-3.jpg";
+            } else if(overviewImageSelect4Radio.isSelected()) {
+                extension = "ext-4.jpg";
+            } else if(overviewImageSelect5Radio.isSelected()) {
+                extension = "int-1.jpg";
+            } else if(overviewImageSelect6Radio.isSelected()) {
+                extension = "int-2.jpg";
+            }
+        }
+                
+        path.append(extColorPath);
+        path.append("/");
+        path.append(wheelStylePath);
+        path.append("/");
+        path.append(intColorPath);
+        path.append("/");
+        path.append(transPath);
+        path.append("/");
+        path.append(extension);
+                
+        String finalPath = path.toString();
+        
+        Image caymanDisplayImage = new ImageIcon(this.getClass().getResource("images/cayman-model/" + finalPath)).getImage();
+        ImageIcon caymanDisplayIcon = new ImageIcon(caymanDisplayImage);
+        if(displayName.equals("main window")) {
+            mainCaymanDisplayLabel.setIcon(caymanDisplayIcon);
+        } else if(displayName.equals("overview window")) {
+            overviewCaymanDisplayLabel.setIcon(caymanDisplayIcon);    
+        }
+    }
+    
+    //Sets components of overview window to match specification from main window
+    //at the time the "Show Overview" button is clicked
+    public void initOverviewDialog() {
+        setImagePath("overview window");
+        getComponents(overviewDialog);
+        overviewGrayDescriptionPanel.setBackground(Color.LIGHT_GRAY);
+        overviewDialog.setIconImage(favicon.getImage());
+        overviewDialog.setBackground(Color.WHITE);
+        overviewPaintColorNameLabel.setText(cayman.getExtColorName());
+        overviewPaintColorPriceLabel.setText(DF.format(cayman.getExtColorPrice()));
+        overviewWheelStyleNameLabel.setText(cayman.getWheelStyleName());
+        overviewWheelStylePriceLabel.setText(DF.format(cayman.getWheelStylePrice()));
+        overviewLeatherColorNameLabel.setText(cayman.getIntColorName());
+        overviewLeatherColorPriceLabel.setText(DF.format(cayman.getIntColorPrice()));
+        overviewTransNameLabel.setText(cayman.getTransType());
+        overviewTransPriceLabel.setText(DF.format(cayman.getTransPrice()));
+        checkSelectedOptions();
+        if(cayman.getOptionNames().length() == 0) {
+            overviewAddUpgradesNameLabel.setText("N/A");
+        } else {
+            overviewAddUpgradesNameLabel.setText("<html>" + cayman.getOptionNames().toString() + "</html>");
+        }
+        if(cayman.getOptionPrices().length() == 0) {
+            overviewAddUpgradesPriceLabel.setText("N/A");
+        } else {
+            overviewAddUpgradesPriceLabel.setText("<html><body style='text-align: right'>" + cayman.getOptionPrices().toString() + "</html>");
+        }
+        overviewDialog.setLocationRelativeTo(null);
+        overviewDialog.setVisible(true);
+    }
+    
+    public void printDialogToPDF() {
+        Document document = new Document(PageSize.A4.rotate());
+        try {
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(PDFFILE));
+            document.open();
+            PdfContentByte contentByte = writer.getDirectContent();
+            PdfTemplate template = contentByte.createTemplate(overviewDialog.getWidth(), overviewDialog.getHeight());
+            Graphics2D g2 = template.createGraphics(overviewDialog.getWidth(), overviewDialog.getHeight());
+            g2.scale(0.76, 0.76);
+            g2.translate(0, 100);
+            overviewDialog.print(g2);
+            g2.dispose();
+            contentByte.addTemplate(template, 0, 0);
+            getComponents(successPDFDialog);
+            successPDFDialog.setIconImage(favicon.getImage());
+            successPDFDialog.setBackground(Color.WHITE);
+            successPDFDialog.setLocationRelativeTo(null);
+            successPDFDialog.setVisible(true);
+        } catch (DocumentException | FileNotFoundException e) {
+            getComponents(fileNotFoundPDFDialog);
+            fileNotFoundPDFDialog.setIconImage(favicon.getImage());
+            fileNotFoundPDFDialog.setBackground(Color.WHITE);
+            fileNotFoundPDFDialog.setLocationRelativeTo(null);
+            fileNotFoundPDFDialog.setVisible(true);
+        } finally {
+            if(document.isOpen()) {
+                document.close();
+            }
+        }
+    }
+    
+    public void printDialogToCSV() {
+        BufferedWriter bufferedWriter = null;
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(CSVFILE);
+            bufferedWriter = new BufferedWriter(fileWriter);
+
+            bufferedWriter.write("Item,Selection,Price");
+            bufferedWriter.newLine();
+            bufferedWriter.write("2018 Porsche 718 Cayman S,Base Price,67700");
+            bufferedWriter.newLine();
+            bufferedWriter.write("2018 Porsche 718 Cayman S,Price for Equipment," + NF.parse(overviewEquipPriceDollarLabel.getText()));
+            bufferedWriter.newLine();
+            bufferedWriter.write("2018 Porsche 718 Cayman S,Delivery/Processing/Handling Fee,1050");
+            bufferedWriter.newLine();
+            bufferedWriter.write("2018 Porsche 718 Cayman S,Total Price," + NF.parse(overviewTotalPriceDollarLabel.getText()));
+            bufferedWriter.newLine();
+            bufferedWriter.write("Paint Color," + cayman.getExtColorName() + "," + cayman.getExtColorPrice());
+            bufferedWriter.newLine();
+            bufferedWriter.write("Wheel Style," + cayman.getWheelStyleName() + "," + cayman.getWheelStylePrice());
+            bufferedWriter.newLine();
+            bufferedWriter.write("Interior Color," + cayman.getIntColorName() + "," + cayman.getIntColorPrice());
+            bufferedWriter.newLine();
+            bufferedWriter.write("Transmission Type," + cayman.getTransType() + "," + cayman.getTransPrice());
+            bufferedWriter.newLine();
+            
+            String[] optionNamesString = cayman.getOptionNames().toString().split("<br>");
+            String[] optionPricesString = cayman.getOptionPrices().toString().split("<br>");
+            if(cayman.getOptionNames().length() == 0) {
+                bufferedWriter.write("No Options Selected,N/A,0");
+            } else {
+                for(int i = 1; i <= optionNamesString.length; i++) {
+                    bufferedWriter.write("Option " + i + "," + optionNamesString[i-1].replace("®", "") + "," + NF.parse(optionPricesString[i-1]));
+                    bufferedWriter.newLine();
+                }
+            }
+            getComponents(successCSVDialog);
+            successCSVDialog.setIconImage(favicon.getImage());
+            successCSVDialog.setBackground(Color.WHITE);
+            successCSVDialog.setLocationRelativeTo(null);
+            successCSVDialog.setVisible(true);
+        } catch (FileNotFoundException fnf) {
+            getComponents(fileNotFoundCSVDialog);
+            fileNotFoundCSVDialog.setIconImage(favicon.getImage());
+            fileNotFoundCSVDialog.setBackground(Color.WHITE);
+            fileNotFoundCSVDialog.setLocationRelativeTo(null);
+            fileNotFoundCSVDialog.setVisible(true);
+        } catch (IOException | ParseException exception) {
+            getComponents(internalErrorCSVDialog);
+            internalErrorCSVDialog.setIconImage(favicon.getImage());
+            internalErrorCSVDialog.setBackground(Color.WHITE);
+            internalErrorCSVDialog.setLocationRelativeTo(null);
+            internalErrorCSVDialog.setVisible(true);
+        } finally {
+            try {
+                if (bufferedWriter != null)
+                    bufferedWriter.close();
+                if (fileWriter != null)
+                    fileWriter.close();
+            } catch (IOException io) {
+                getComponents(internalErrorCSVDialog);
+                internalErrorCSVDialog.setIconImage(favicon.getImage());
+                internalErrorCSVDialog.setBackground(Color.WHITE);
+                internalErrorCSVDialog.setLocationRelativeTo(null);
+                internalErrorCSVDialog.setVisible(true);
+            }
+        }
+    }
+        
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new MainWindow().setVisible(true);
+            }
+        });
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1482,289 +1765,6 @@ public class MainWindow extends javax.swing.JFrame {
     private void pdfFileNotFoundOKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pdfFileNotFoundOKButtonActionPerformed
         fileNotFoundPDFDialog.dispose();
     }//GEN-LAST:event_pdfFileNotFoundOKButtonActionPerformed
-
-    public void checkSelectedOptions() {
-        cayman.getOptionNames().setLength(0);
-        cayman.getOptionPrices().setLength(0);
-        if(mainSeatHeatCheckBox.isSelected()) {
-            cayman.addOption("Seat Heating", 530);
-        } if(mainPASMCheckBox.isSelected()) {
-            cayman.addOption("Porsche Active Stability Management (PASM)", 1790);
-        } if(mainBoseCheckBox.isSelected()) {
-            cayman.addOption("BOSE® Surround Sound System", 990);
-        } if(mainNavCheckBox.isSelected()) {
-            cayman.addOption("Navigation Module", 1780);
-        }
-    }
-    
-    public int getEquipPrice() {
-        int price = 0;
-        if(mainSeatHeatCheckBox.isSelected()) {
-            price += 530;
-        } if(mainPASMCheckBox.isSelected()) {
-            price += 1790;
-        } if(mainBoseCheckBox.isSelected()) {
-            price += 990;
-        } if(mainNavCheckBox.isSelected()) {
-            price += 1780;
-        }
-        return price;
-    }
-    
-    //Change all components' background color to white in a given container
-    @SuppressWarnings("empty-statement")
-    private void getComponents(Container container) {
-
-    Component[] components = container.getComponents();
-        for (Component component : components) {
-            if ("javax.swing.JPanel".equals(component.getClass().getName())) {
-                component.setBackground(Color.WHITE);
-            } if (container.getClass().isInstance(component)) {
-                ;
-            }
-            getComponents((Container) component);
-        }
-    }
-    
-    public void setPriceFields() {
-        int basePrice = 67700;
-        int equipPrice = getEquipPrice();
-        equipPrice += cayman.getExtColorPrice()
-                    + cayman.getWheelStylePrice()
-                    + cayman.getIntColorPrice()
-                    + cayman.getTransPrice();
-        int deliverPrice = 1050;
-        int totalPrice = basePrice + equipPrice + deliverPrice;
-        mainEquipPriceDollarLabel.setText(DF.format(equipPrice));
-        mainTotalPriceDollarLabel.setText(DF.format(totalPrice));
-        overviewEquipPriceDollarLabel.setText(DF.format(equipPrice));
-        overviewTotalPriceDollarLabel.setText(DF.format(totalPrice));
-    }
-    
-    //Determines current specification, builds path to corresponding model-image
-    //directory, loads proper images to GUI model display
-    public void setImagePath(String displayName) {
-        StringBuilder path = new StringBuilder(50);
-        
-        String extColorPath = cayman.getExtColorPath();
-        String wheelStylePath = cayman.getWheelStylePath();
-        String intColorPath = cayman.getIntColorPath();
-        String transPath = cayman.getTransPath();
-        String extension = "";
-        if(displayName.equalsIgnoreCase("main window")) {
-            if(mainImageSelect1Radio.isSelected()) {
-                extension = "ext-1.jpg";
-            } else if(mainImageSelect2Radio.isSelected()) {
-                extension = "ext-2.jpg";
-            } else if(mainImageSelect3Radio.isSelected()) {
-                extension = "ext-3.jpg";
-            } else if(mainImageSelect4Radio.isSelected()) {
-                extension = "ext-4.jpg";
-            } else if(mainImageSelect5Radio.isSelected()) {
-                extension = "int-1.jpg";
-            } else if(mainImageSelect6Radio.isSelected()) {
-                extension = "int-2.jpg";
-            }
-        } else if(displayName.equalsIgnoreCase("overview window")) {
-            if(overviewImageSelect1Radio.isSelected()) {
-                extension = "ext-1.jpg";
-            } else if(overviewImageSelect2Radio.isSelected()) {
-                extension = "ext-2.jpg";
-            } else if(overviewImageSelect3Radio.isSelected()) {
-                extension = "ext-3.jpg";
-            } else if(overviewImageSelect4Radio.isSelected()) {
-                extension = "ext-4.jpg";
-            } else if(overviewImageSelect5Radio.isSelected()) {
-                extension = "int-1.jpg";
-            } else if(overviewImageSelect6Radio.isSelected()) {
-                extension = "int-2.jpg";
-            }
-        }
-                
-        path.append(extColorPath);
-        path.append("/");
-        path.append(wheelStylePath);
-        path.append("/");
-        path.append(intColorPath);
-        path.append("/");
-        path.append(transPath);
-        path.append("/");
-        path.append(extension);
-                
-        String finalPath = path.toString();
-        
-        Image caymanDisplayImage = new ImageIcon(this.getClass().getResource("images/cayman-model/" + finalPath)).getImage();
-        ImageIcon caymanDisplayIcon = new ImageIcon(caymanDisplayImage);
-        if(displayName.equals("main window")) {
-            mainCaymanDisplayLabel.setIcon(caymanDisplayIcon);
-        } else if(displayName.equals("overview window")) {
-            overviewCaymanDisplayLabel.setIcon(caymanDisplayIcon);    
-        }
-    }
-    
-    //Sets components of overview window to match specification from main window
-    //at the time the "Show Overview" button is clicked
-    public void initOverviewDialog() {
-        setImagePath("overview window");
-        getComponents(overviewDialog);
-        overviewGrayDescriptionPanel.setBackground(Color.LIGHT_GRAY);
-        overviewDialog.setIconImage(favicon.getImage());
-        overviewDialog.setBackground(Color.WHITE);
-        overviewPaintColorNameLabel.setText(cayman.getExtColorName());
-        overviewPaintColorPriceLabel.setText(DF.format(cayman.getExtColorPrice()));
-        overviewWheelStyleNameLabel.setText(cayman.getWheelStyleName());
-        overviewWheelStylePriceLabel.setText(DF.format(cayman.getWheelStylePrice()));
-        overviewLeatherColorNameLabel.setText(cayman.getIntColorName());
-        overviewLeatherColorPriceLabel.setText(DF.format(cayman.getIntColorPrice()));
-        overviewTransNameLabel.setText(cayman.getTransType());
-        overviewTransPriceLabel.setText(DF.format(cayman.getTransPrice()));
-        checkSelectedOptions();
-        if(cayman.getOptionNames().length() == 0) {
-            overviewAddUpgradesNameLabel.setText("N/A");
-        } else {
-            overviewAddUpgradesNameLabel.setText("<html>" + cayman.getOptionNames().toString() + "</html>");
-        }
-        if(cayman.getOptionPrices().length() == 0) {
-            overviewAddUpgradesPriceLabel.setText("N/A");
-        } else {
-            overviewAddUpgradesPriceLabel.setText("<html><body style='text-align: right'>" + cayman.getOptionPrices().toString() + "</html>");
-        }
-        overviewDialog.setLocationRelativeTo(null);
-        overviewDialog.setVisible(true);
-    }
-    
-    public void printDialogToPDF() {
-        Document document = new Document(PageSize.A4.rotate());
-        try {
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(PDFFILE));
-            document.open();
-            PdfContentByte contentByte = writer.getDirectContent();
-            PdfTemplate template = contentByte.createTemplate(overviewDialog.getWidth(), overviewDialog.getHeight());
-            Graphics2D g2 = template.createGraphics(overviewDialog.getWidth(), overviewDialog.getHeight());
-            g2.scale(0.76, 0.76);
-            g2.translate(0, 100);
-            overviewDialog.print(g2);
-            g2.dispose();
-            contentByte.addTemplate(template, 0, 0);
-            getComponents(successPDFDialog);
-            successPDFDialog.setIconImage(favicon.getImage());
-            successPDFDialog.setBackground(Color.WHITE);
-            successPDFDialog.setLocationRelativeTo(null);
-            successPDFDialog.setVisible(true);
-        } catch (DocumentException | FileNotFoundException e) {
-            getComponents(fileNotFoundPDFDialog);
-            fileNotFoundPDFDialog.setIconImage(favicon.getImage());
-            fileNotFoundPDFDialog.setBackground(Color.WHITE);
-            fileNotFoundPDFDialog.setLocationRelativeTo(null);
-            fileNotFoundPDFDialog.setVisible(true);
-        } finally {
-            if(document.isOpen()) {
-                document.close();
-            }
-        }
-    }
-    
-    public void printDialogToCSV() {
-        BufferedWriter bufferedWriter = null;
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(CSVFILE);
-            bufferedWriter = new BufferedWriter(fileWriter);
-
-            bufferedWriter.write("Item,Selection,Price");
-            bufferedWriter.newLine();
-            bufferedWriter.write("2018 Porsche 718 Cayman S,Base Price,67700");
-            bufferedWriter.newLine();
-            bufferedWriter.write("2018 Porsche 718 Cayman S,Price for Equipment," + NF.parse(overviewEquipPriceDollarLabel.getText()));
-            bufferedWriter.newLine();
-            bufferedWriter.write("2018 Porsche 718 Cayman S,Delivery/Processing/Handling Fee,1050");
-            bufferedWriter.newLine();
-            bufferedWriter.write("2018 Porsche 718 Cayman S,Total Price," + NF.parse(overviewTotalPriceDollarLabel.getText()));
-            bufferedWriter.newLine();
-            bufferedWriter.write("Paint Color," + cayman.getExtColorName() + "," + cayman.getExtColorPrice());
-            bufferedWriter.newLine();
-            bufferedWriter.write("Wheel Style," + cayman.getWheelStyleName() + "," + cayman.getWheelStylePrice());
-            bufferedWriter.newLine();
-            bufferedWriter.write("Interior Color," + cayman.getIntColorName() + "," + cayman.getIntColorPrice());
-            bufferedWriter.newLine();
-            bufferedWriter.write("Transmission Type," + cayman.getTransType() + "," + cayman.getTransPrice());
-            bufferedWriter.newLine();
-            
-            String[] optionNamesString = cayman.getOptionNames().toString().split("<br>");
-            String[] optionPricesString = cayman.getOptionPrices().toString().split("<br>");
-            if(cayman.getOptionNames().length() == 0) {
-                bufferedWriter.write("No Options Selected,N/A,0");
-            } else {
-                for(int i = 1; i <= optionNamesString.length; i++) {
-                    bufferedWriter.write("Option " + i + "," + optionNamesString[i-1].replace("®", "") + "," + NF.parse(optionPricesString[i-1]));
-                    bufferedWriter.newLine();
-                }
-            }
-            getComponents(successCSVDialog);
-            successCSVDialog.setIconImage(favicon.getImage());
-            successCSVDialog.setBackground(Color.WHITE);
-            successCSVDialog.setLocationRelativeTo(null);
-            successCSVDialog.setVisible(true);
-        } catch (FileNotFoundException fnf) {
-            getComponents(fileNotFoundCSVDialog);
-            fileNotFoundCSVDialog.setIconImage(favicon.getImage());
-            fileNotFoundCSVDialog.setBackground(Color.WHITE);
-            fileNotFoundCSVDialog.setLocationRelativeTo(null);
-            fileNotFoundCSVDialog.setVisible(true);
-        } catch (IOException | ParseException exception) {
-            getComponents(internalErrorCSVDialog);
-            internalErrorCSVDialog.setIconImage(favicon.getImage());
-            internalErrorCSVDialog.setBackground(Color.WHITE);
-            internalErrorCSVDialog.setLocationRelativeTo(null);
-            internalErrorCSVDialog.setVisible(true);
-        } finally {
-            try {
-                if (bufferedWriter != null)
-                    bufferedWriter.close();
-                if (fileWriter != null)
-                    fileWriter.close();
-            } catch (IOException io) {
-                getComponents(internalErrorCSVDialog);
-                internalErrorCSVDialog.setIconImage(favicon.getImage());
-                internalErrorCSVDialog.setBackground(Color.WHITE);
-                internalErrorCSVDialog.setLocationRelativeTo(null);
-                internalErrorCSVDialog.setVisible(true);
-            }
-        }
-    }
-    
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MainWindow().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;

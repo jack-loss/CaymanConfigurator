@@ -1,10 +1,14 @@
 # Cayman Configurator
 
-The Cayman Configurator application mimics the car configurator from the [Porsche official website](https://cc.porsche.com/icc_pcna/ccCall.do?rt=1508789638&screen=1280x720&userID=USM&lang=us&PARAM=parameter_internet_us&ORDERTYPE=982130&MODELYEAR=2018&hookURL=http%3a%2f%2fwww.porsche.com%2fusa%2fmodelstart%2f), allowing a user to customize a 2018 Porsche 718 Cayman S to their desired specification with real-time model-photo and price updates. In addition to configuration, the user has the option to view a summary of their specification and save their configuration to their home directory in CSV and/or PDF format.
+The Cayman Configurator is a Java Swing GUI application mimics the car configurator from the [Porsche official website](https://cc.porsche.com/icc_pcna/ccCall.do?rt=1508789638&screen=1280x720&userID=USM&lang=us&PARAM=parameter_internet_us&ORDERTYPE=982130&MODELYEAR=2018&hookURL=http%3a%2f%2fwww.porsche.com%2fusa%2fmodelstart%2f), allowing a user to customize a 2018 Porsche 718 Cayman S to their desired specification with real-time model-photo and price updates. In addition to configuration, the user has the option to view a summary of their specification and save their configuration to their home directory in CSV and/or PDF format.
+
+## Motivation & Purpose
+
+The Cayman Configurator is inspired by my dual passion for behind-the-scenes application logic and in-your-face interface design. In my free time, I enjoy configuring cars on manufacturers' websites, so I figured it would be an interesting challenge/display of skill to be able to "recreate" a manufacturer's car configurator using a Java Swing GUI.
 
 ## Getting Started
 
-These instructions will assist you in downloading and launching the Cayman Configurator program on your computer.
+These instructions will assist you in downloading and launching the Cayman Configurator program on your computer
 
 ### Prerequisites:
 

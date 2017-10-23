@@ -28,7 +28,7 @@ The MainWindow class handles all of the GUI-related code (e.g. GUI creation, act
 
 #### MainWindow():
 
-This method creates a MainWindow object and initializes all of the GUI components using the auto-generated code. Additionally, this method set's the windows' backgrounds to white, sets the favicon to the Porsche crest, and sets each window to load in the middle of the screen (rather than the top-left)
+This method initializes all of the MainWindow's GUI components using the auto-generated code. Additionally, this method sets all windows' backgrounds to white, sets the favicon to the Porsche crest, and sets each window to load in the middle of the screen (rather than the top-left)
 
 #### checkSelectedOptions():
 
@@ -48,4 +48,36 @@ This method sets the values for the price-breakdown section to reflect real-time
 
 #### setImagePath(String displayName):
 
-This is the coolest method of the program. This method dynamically creates the file path necessary to gather the proper images by building a String 
+This is the coolest method of the program. This method dynamically creates the file path necessary to gather the proper images by using a StringBuilder using the following (simplified) format
+```
+StringBuilder path = new StringBuilder(50);
+
+path.append(extColorPath);
+path.append("/");
+path.append(wheelStylePath);
+path.append("/");
+path.append(intColorPath);
+path.append("/");
+path.append(transPath);
+path.append("/");
+path.append(extension); 
+
+String finalPath = path.toString();
+Image caymanDisplayImage = new ImageIcon(this.getClass().getResource("images/cayman-model/" + finalPath)).getImage();
+```
+
+#### initOverviewDialog():
+
+This method creates and initializes the components of the Specification Summary window when the user clicks the "Show Overview" button by determining the values of all GUI and Cayman-object fields at the time the button is clicked and using those values to set the values of the corresponding Specification Summary window components
+
+#### printDialogToPDF():
+
+This method prints and saves the user's model configuration to a PDF file in the current user's home directory using the iText library's PDF-writing abilities and "painting" each of the window's components to the PDF. This method also contains error-handling/JOptionPane messages that appear if the user successfully saves the PDF or encounters an error (e.g. the file to which the data is being saved is already open)
+
+#### printDialogToCSV():
+
+This method writes the configured-Cayman's option names and prices to a CSV file in the current user's home directory using a FileWriter & BufferedWriter. This method also contains error-handling/JOptionPane messages that appear if the user successfully saves the PDF or encounters an error (e.g. the file to which the data is being saved is already open)
+
+#### main(String[] args):
+
+This method simply creates a MainWindow object and sets the MainWindow's visibility property to true

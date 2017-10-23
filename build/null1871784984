@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.9.7
+Created-By: 1.8.0_131-b11 (Oracle Corporation)
+Codebase: C:\Users\Jack\Desktop\CaymanConfigurator\dist
+Application-Library-Allowable-Codebase: C:\Users\Jack\Desktop\CaymanCo
+ nfigurator\dist
+Caller-Allowable-Codebase: C:\Users\Jack\Desktop\CaymanConfigurator\di
+ st
+Permissions: all-permissions
+Application-Name: Cayman Configurator
+

@@ -57,4 +57,4 @@ These instructions will assist you in downloading and launching the Cayman Confi
  
 ## Further Reading
 
-Discussion of the program's [architecture](https://github.com/jack-loss/CaymanConfigurator/tree/master/discussion) and [initial design](https://github.com/jack-loss/CaymanConfigurator/tree/master/discussion/Initial%20Design)
+Discussion of the program's [architecture](https://github.com/jack-loss/CaymanConfigurator/blob/master/discussion/DISCUSSION.md) and [initial design](https://github.com/jack-loss/CaymanConfigurator/tree/master/discussion/Initial%20Design)

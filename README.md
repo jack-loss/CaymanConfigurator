@@ -8,29 +8,29 @@ These instructions will assist you in downloading and launching the Cayman Confi
 
 ### Prerequisites:
 
- - Java Runtime Environment (JRE) -> Download [here](https://java.com/en/)
+ - [Java Runtime Environment (JRE)](https://java.com/en/)
  - Ability to unzip compressed folders
 
 ### Installation:
 
  1. Navigate to the [dist](https://github.com/jack-loss/CaymanConfigurator/tree/master/dist) folder
- 2. Click the file named [CaymanConfigurator.ZIP](https://github.com/jack-loss/CaymanConfigurator/blob/master/dist/CaymanConfigurator.zip) and select "Download"
- 3. Locate the CaymanConfigurator.ZIP file in your Downloads folder
- 4. Drag the CaymanConfigurator.ZIP file to your Desktop
- 5. Right-click the CaymanConfigurator.ZIP file and select "Extract All..."
+ 2. Click the file named [CaymanConfigurator.zip](https://github.com/jack-loss/CaymanConfigurator/blob/master/dist/CaymanConfigurator.zip) and select "Download"
+ 3. Locate the CaymanConfigurator.zip file in your Downloads folder
+ 4. Drag the CaymanConfigurator.zip file to your Desktop
+ 5. Right-click the CaymanConfigurator.zip file and select "Extract All..."
  6. Leave the default settings in the prompt, make sure that "Show extracted files when complete" is checked, and click "Extract"
  7. Open the newly-created folder called "CaymanConfigurator"
- 8. Make sure that the "lib" folder is in the "CaymanConfigurator" folder, along with the CaymanConfigurator.JAR file
- 9. Double-click the "CaymanConfigurator.JAR" file
+ 8. Make sure that the "lib" folder is in the "CaymanConfigurator" folder, along with the CaymanConfigurator.jar file
+ 9. Double-click the "CaymanConfigurator.jar" file
  10. The Cayman Configurator application is launched!
 
 ## Using the Application
 
  1. Note the layout of the interface upon first starting the application:
-  - Model photo on the left
-  - Configuration options on the right
-  - Price breakdown on the bottom left under the model photo
-  - "Show Overview" button on the bottom right under the configuration options
+    - Model photo on the left
+    - Configuration options on the right
+    - Price breakdown on the bottom left under the model photo
+    - "Show Overview" button on the bottom right under the configuration options
  2. Select your desired exterior color by selecting one of the five colored squares under the "Exerior Color" heading. Each option has ToolTip text that shows the option's name and price; activate by hovering your cursor over the corresponding icon for a few seconds. The exterior color currently selected is indicated by an inscribed red circle with white check mark. Note that the current price is updated in real-time in the price-breakdown section under the model photo
  3. Repeat the above process for the wheel style and interior color
  4. Select your desired transmission by clicking on one of the two radio buttons under the "Transmission" heading

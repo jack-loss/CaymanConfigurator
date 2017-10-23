@@ -1,33 +1,28 @@
 # Cayman Configurator
 
-The Cayman Configurator application mimics the car configurator from the Porsche official website,
-allowing a user to customize a 2018 Porsche 718 Cayman S to their desired specification with
-real-time model-photo and price updates. In addition to configuration, the user has the option
-to view a summary of their specification and save their configuration to their home directory in
-CSV and/or PDF format.
+The Cayman Configurator application mimics the car configurator from the [Porsche official website](https://cc.porsche.com/icc_pcna/ccCall.do?rt=1508789638&screen=1280x720&userID=USM&lang=us&PARAM=parameter_internet_us&ORDERTYPE=982130&MODELYEAR=2018&hookURL=http%3a%2f%2fwww.porsche.com%2fusa%2fmodelstart%2f), allowing a user to customize a 2018 Porsche 718 Cayman S to their desired specification with real-time model-photo and price updates. In addition to configuration, the user has the option to view a summary of their specification and save their configuration to their home directory in CSV and/or PDF format.
 
 ## Getting Started
 
-These instructions will assist you in downloading and launching the Cayman Configurator program on
-your computer.
+These instructions will assist you in downloading and launching the Cayman Configurator program on your computer.
 
 ### Prerequisites:
 
- - The Java Runtime Environment (JRE) -> Download [here] (https://java.com/en/)
+ - Java Runtime Environment (JRE) -> Download [here](https://java.com/en/)
  - Ability to unzip compressed folders
 
 ### Installation:
 
- -Navigate to the dist/ folder
- -Right-click the file named "CaymanConfigurator.ZIP" and select "Download"
--locate the CaymanConfigurator.ZIP file in your Downloads folder
--Drag the CaymanConfigurator.ZIP file to your Desktop?
--right-click the CaymanConfigurator.ZIP file and select "Extract here"
--click yes
--open the new decompressed/extracted folder called "CaymanConfigurator"
--make sure that the "lib" folder is in the "CaymanConfigurator" folder, along with the CaymanConfigurator.JAR file
--double-click the "CaymanConfigurator.JAR" file
--the Cayman Configurator application is launched
+ - Navigate to the [dist](https://github.com/jack-loss/CaymanConfigurator/tree/master/dist) folder
+ - Right-click the file named [CaymanConfigurator.ZIP](https://github.com/jack-loss/CaymanConfigurator/blob/master/dist/CaymanConfigurator.zip) and select "Download"
+ - Locate the CaymanConfigurator.ZIP file in your Downloads folder
+ - Drag the CaymanConfigurator.ZIP file to your Desktop
+ - Right-click the CaymanConfigurator.ZIP file and select "Extract All..."
+ - Leave the default settings in the prompt, make sure that "Show extracted files when complete" is checked, and click "Extract"
+ - Open the newly-created folder called "CaymanConfigurator"
+ - Make sure that the "lib" folder is in the "CaymanConfigurator" folder, along with the CaymanConfigurator.JAR file
+ - Double-click the "CaymanConfigurator.JAR" file
+ - The Cayman Configurator application is launched!
 
 ## Using the Application
 

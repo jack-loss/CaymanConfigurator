@@ -1,4 +1,4 @@
-#Cayman Configurator
+# Cayman Configurator
 
 The Cayman Configurator application mimics the car configurator from the Porsche official website,
 allowing a user to customize a 2018 Porsche 718 Cayman S to their desired specification with
@@ -6,17 +6,17 @@ real-time model-photo and price updates. In addition to configuration, the user 
 to view a summary of their specification and save their configuration to their home directory in
 CSV and/or PDF format.
 
-##Getting Started
+## Getting Started
 
 These instructions will assist you in downloading and launching the Cayman Configurator program on
 your computer.
 
-###Prerequisites:
+### Prerequisites:
 
  - The Java Runtime Environment (JRE) -> Download [here] (https://java.com/en/)
  - Ability to unzip compressed folders
 
-###Installation:
+### Installation:
 
  -Navigate to the dist/ folder
  -Right-click the file named "CaymanConfigurator.ZIP" and select "Download"
@@ -29,7 +29,7 @@ your computer.
 -double-click the "CaymanConfigurator.JAR" file
 -the Cayman Configurator application is launched
 
-##Using the Application
+## Using the Application
 
 
 

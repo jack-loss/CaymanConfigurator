@@ -6,7 +6,7 @@ Cayman Configurator is written in Java SE 8 using the NetBeans IDE. Cayman Confi
 
 ## Model Images & UI Components
 
-The model images for the Cayman were taken directly from the [Porsche official website](https://cc.porsche.com/icc_pcna/ccCall.do?rt=1508789638&screen=1280x720&userID=USM&lang=us&PARAM=parameter_internet_us&ORDERTYPE=982130&MODELYEAR=2018&hookURL=http%3a%2f%2fwww.porsche.com%2fusa%2fmodelstart%2f). I went through each possible combination of options and image angles and saved the model images in an organized directory, which is how I implemented the real-time model-photo updates when the user clicks on any of the options in the interface (discussed here).
+The model images for the Cayman were taken directly from the [Porsche official website](https://cc.porsche.com/icc_pcna/ccCall.do?rt=1508789638&screen=1280x720&userID=USM&lang=us&PARAM=parameter_internet_us&ORDERTYPE=982130&MODELYEAR=2018&hookURL=http%3a%2f%2fwww.porsche.com%2fusa%2fmodelstart%2f). I went through each possible combination of options and image angles and saved the model images in an organized directory, which is how I implemented the real-time model-photo updates when the user clicks on any of the options in the interface, discussed [here](https://github.com/jack-loss/CaymanConfigurator/blob/master/discussion/DISCUSSION.md#setimagepathstring-displayname).
 
 The UI components (selected icons, interactive buttons, etc.) were inspired by the design of the UI components on the Porsche website, but created from-scratch by me in Adobe Photoshop CC 2015.5.
 
@@ -14,41 +14,42 @@ The UI components (selected icons, interactive buttons, etc.) were inspired by t
 
 The Cayman Configurator application consists of two Java classes: MainWindow.java and Cayman.java. The MainWindow class handles all of the GUI-related code (e.g. GUI creation, action handlers, etc.) while the Cayman class contains the necessary code to create Cayman objects, which are used by the MainWindow class to create the amazing user experience you enjoy while using the Cayman Configurator program! 
 
-### Cayman.java:
+### Cayman.java
 
 When the Cayman Configurator application is launched, a default Cayman object is created. Each Cayman object contains three fields for each of the options (exterior paint color, wheel style, etc.):
- - (optionName)Name (a String containing the upper-camel-case capitalization of the specific option choice (e.g. "Miami Blue" for Miami Blue exterior paint)
- - (optionName)Price (an int value containing the dollar amount of the selected option (e.g. $2,580 for Miami Blue exterior paint)
- - (optionName)Path (a String containing a portion of the file path needed to navigate through the organized file structure and load the proper model images (e.g. "miami-blue" for Miami Blue exterior paint). This is the highlight of the program's architecture and is further discussed here!!!! in the section about the setImagePath() method
+ - (optionName)Name: a String containing the upper-camel-case capitalization of the specific option choice (e.g. "Miami Blue" for Miami Blue exterior paint)
+ - (optionName)Price: an int value containing the dollar amount of the selected option (e.g. $2,580 for Miami Blue exterior paint)
+ - (optionName)Path: a String containing a portion of the file path needed to navigate through the organized file structure and load the proper model images (e.g. "miami-blue" for Miami Blue exterior paint). This is the highlight of the program's architecture and is further discussed [here](https://github.com/jack-loss/CaymanConfigurator/blob/master/discussion/DISCUSSION.md#setimagepathstring-displayname) in the section about the setImagePath() method.
+
 The Cayman class also contains typical getter and setter methods not worth much discussion aside from directing your attention to the fact that each getter method deals with a single field of the Cayman object (e.g. getExtColorPrice() returns an int value for the extColorPrice field) while each setter method deals with all-three related fields for the option in question (e.g. setExtColor(String extColorName, int extColorPrice, String extColorPath) takes as parameters three values, one for the paint color's name, one for the paint color's price, and one for the corresponding portion of the paint color's file path. The reasoning behind this is that when one of the UI radio buttons is selected (e.g. the user selects the Miami Blue exterior paint), the action handler in MainWindow.java calls the setExtColor() method and passes the appropriate values so that the "Show Overview" dialog displays the proper paint color name (extColorName), the real-time price-breakdown section shows the proper prices (extColorPrice), and the model image correctly displays the proper specification (extColorPath).
 
-### MainWindow.java:
+### MainWindow.java
 
 The MainWindow class handles all of the GUI-related code (e.g. GUI creation, action handlers, etc.). The majority of the code in the MainWindow class is auto-generated by the GUI builder in the NetBeans IDE. I placed most of my hand-coded methods towards the top of the class, above the auto-generated code, for ease of access and readability. Let's discuss each of the methods.
 
-#### MainWindow():
+#### MainWindow()
 
-This method initializes all of the MainWindow's GUI components using the auto-generated code. Additionally, this method sets all windows' backgrounds to white, sets the favicon to the Porsche crest, and sets each window to load in the middle of the screen (rather than the top-left)
+This method initializes all of the MainWindow's GUI components using the auto-generated code. Additionally, this method sets all windows' backgrounds to white, sets the favicon to the Porsche crest, and sets each window to load in the middle of the screen (rather than the top-left).
 
-#### checkSelectedOptions():
+#### checkSelectedOptions()
 
 This method determines which of the additional upgrades (e.g. Seat Heating) is/are selected using a series of if statements. If the option is selected, the addOption method is called on the Cayman object and passes the option's name (String) and price (int) as values.
 
-#### getEquipPrice():
+#### getEquipPrice()
 
 This method determines the price of the selected equipment by using a series of if statements to see which of the additional upgrades is/are selected. If an option is selected, the price variable is updated to reflect that option's corresponding price.
 
-#### getComponents(Container container):
+#### getComponents(Container container)
 
 This method sets each of a given container's components' background color to white.
 
-#### setPriceFields():
+#### setPriceFields()
 
 This method sets the values for the price-breakdown section to reflect real-time price updates as the user changes their specification. This is where the getEquipPrice method is used -- to determine the price of the selected options.
 
-#### setImagePath(String displayName):
+#### setImagePath(String displayName)
 
-This is the coolest method of the program. This method dynamically creates the file path necessary to gather the proper images by using a StringBuilder using the following (simplified) format
+This is the coolest method of the program. This method dynamically creates the file path necessary to gather the proper model images by using a StringBuilder using the following (simplified) format:
 ```
 StringBuilder path = new StringBuilder(50);
 
@@ -65,19 +66,20 @@ path.append(extension);
 String finalPath = path.toString();
 Image caymanDisplayImage = new ImageIcon(this.getClass().getResource("images/cayman-model/" + finalPath)).getImage();
 ```
+This method is called each time any option icon is selected (e.g. Miami Blue exterior paint) so that the model photos are updated in real-time, as the user configures their desired Cayman.
 
-#### initOverviewDialog():
+#### initOverviewDialog()
 
-This method creates and initializes the components of the Specification Summary window when the user clicks the "Show Overview" button by determining the values of all GUI and Cayman-object fields at the time the button is clicked and using those values to set the values of the corresponding Specification Summary window components
+This method creates and initializes the components of the Specification Summary window when the user clicks the "Show Overview" button by determining the values of all GUI and Cayman-object fields at the time the button is clicked and using those values to set the values of the corresponding Specification Summary window components.
 
-#### printDialogToPDF():
+#### printDialogToPDF()
 
-This method prints and saves the user's model configuration to a PDF file in the current user's home directory using the iText library's PDF-writing abilities and "painting" each of the window's components to the PDF. This method also contains error-handling/JOptionPane messages that appear if the user successfully saves the PDF or encounters an error (e.g. the file to which the data is being saved is already open)
+This method prints and saves the user's model configuration to a PDF file in the current user's home directory using the iText library's PDF-writing abilities and "painting" each of the window's components to the PDF. This method also contains error-handling/JOptionPane messages that appear if the user successfully saves the PDF or encounters an error (e.g. the file to which the data is being saved is already open).
 
-#### printDialogToCSV():
+#### printDialogToCSV()
 
-This method writes the configured-Cayman's option names and prices to a CSV file in the current user's home directory using a FileWriter & BufferedWriter. This method also contains error-handling/JOptionPane messages that appear if the user successfully saves the PDF or encounters an error (e.g. the file to which the data is being saved is already open)
+This method writes the configured-Cayman's option names and prices to a CSV file in the current user's home directory using a FileWriter & BufferedWriter. This method also contains error-handling/JOptionPane messages that appear if the user successfully saves the PDF or encounters an error (e.g. the file to which the data is being saved is already open).
 
-#### main(String[] args):
+#### main(String[] args)
 
-This method simply creates a MainWindow object and sets the MainWindow's visibility property to true
+This method simply creates a MainWindow object and sets the MainWindow's visibility property to true.
